@@ -47,4 +47,5 @@ Temporary Items
 .apdisk
 /src/node_modules
 /src/.vscode
+.vscode
 /src/config.js

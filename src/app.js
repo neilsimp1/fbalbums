@@ -35,10 +35,11 @@ app.get('/:id/albums', function(req, res){
         
         let json = Album.arrayToString(albums);
         
+        res.setHeader('Access-Control-Allow-Origin', '*');
         res.writeHead(200, {'Content-Type': 'application/json'});
         //console.log(json);
         res.end(json);
     });
 });
 
-app.listen(8081);
+app.listen(process.env.port || 1337);

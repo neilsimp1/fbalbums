@@ -1,7 +1,7 @@
 {
   "name": "fbalbums",
   "version": "1.0.0",
-  "engines":{"node": "5.9.0"},
+  "engines":{"node": "5.10.0"},
   "description": "JSON REST APT for Facebook photo albums",
   "main": "app.js",
   "scripts": {
