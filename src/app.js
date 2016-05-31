@@ -12,10 +12,12 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 let facebook = new Facebook(config);
 
-app.get('/:userID/albums', function(req, res){
-    let url = 'http://graph.facebook.com/' + req.params.userID
-                + '?fields=albums.fields(id,name,created_time,photos.fields(id,name,picture,source,created_time).limit(5000))';
-    facebook.api(url, function(err, data){
+app.get('/:userID/albums', (req, res) => {
+    const url = 'http://graph.facebook.com/' + req.params.userID
+                + '?fields=albums.fields(id,name,created_time,photos.fields(id,name,picture,source,created_time).limit(5000))'
+		, albumIDs = req.param('ids') ? req.param('id').split(',') : null;
+	
+    facebook.api(url, (err, data) => {
         let albums = [];
         if(err){
             console.error(err);
@@ -23,9 +25,13 @@ app.get('/:userID/albums', function(req, res){
             res.end();
         }
         else{
-            data.albums.data.forEach(function(_album){
+            data.albums.data.forEach((_album) => {
+				if(albumIDs){
+					if(!albumIDs.contains(_album.id)) return;
+				}
+				
                 let album = new Album(_album.id, _album.name, _album.created_time);
-                _album.photos.data.forEach(function(_photo){
+                _album.photos.data.forEach((_photo) => {
                     album.addPhoto(new Photo(_photo.id, _photo.name, _photo.picture
                                     , _photo.source, _photo.created_time));
                 });
@@ -33,34 +39,7 @@ app.get('/:userID/albums', function(req, res){
             });
         }
         
-        let json = Album.arrayToString(albums);
-        
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.writeHead(200, {'Content-Type': 'application/json'});
-        //console.log(json);
-        res.end(json);
-    });
-});
-
-app.get('/:userID/:albumID', function(req, res){
-    let url = 'http://graph.facebook.com/' + req.params.userID + '/' + req.params.albumID
-                + '?fields=id,name,created_time,photos.fields(id,name,picture,source,created_time).limit(5000))';//untested url
-    facebook.api(url, function(err, data){
-        let album;
-        if(err){
-            console.error(err);
-            res.sendStatus(502);
-            res.end();
-        }
-        else{
-            album = new Album(data.id, data.name, data.created_time);
-			data.photos.data.forEach(function(_photo){
-				album.addPhoto(new Photo(_photo.id, _photo.name, _photo.picture
-								, _photo.source, _photo.created_time));
-			});
-        }
-        
-        let json = album.toString();
+        const json = Album.arrayToString(albums);
         
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.writeHead(200, {'Content-Type': 'application/json'});
