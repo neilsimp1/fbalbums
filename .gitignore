@@ -48,3 +48,6 @@ Temporary Items
 /src/node_modules
 .vscode
 /src/config.js
+/.vs
+*.njsproj
+*.sln

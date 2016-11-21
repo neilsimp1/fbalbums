@@ -4,7 +4,7 @@ class Photo{
     
     constructor(id, name, thumb, src, created_time){
         this._id = id;
-        this._name = name;
+        this._name = name ? name.replace(/"/g, '\\"') : name;
         this._thumb = thumb;
         this._src = src;
         this._created_time = created_time;

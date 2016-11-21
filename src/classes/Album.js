@@ -4,7 +4,7 @@ class Album{
     
     constructor(id, name, created_time){
         this._id = id;
-        this._name = name;
+        this._name = name ? name.replace(/"/g, '\\"') : name;
         this._created_time = created_time;
         this._photos = [];
     }
