@@ -1,8 +1,8 @@
 {
   "name": "fbalbums",
   "version": "1.0.0",
-  "engines":{"node": "6.9.1"},
-  "description": "JSON REST APT for Facebook photo albums",
+  "engines":{"node": "6.11.1"},
+  "description": "JSON REST API for Facebook photo albums",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

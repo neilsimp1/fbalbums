@@ -49,4 +49,4 @@ app.get("/:userID/albums", (req, res) => {
     });
 });
 
-app.listen(process.env.port || 1337);
+app.listen(process.env.port || 3000);
