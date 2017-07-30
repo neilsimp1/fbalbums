@@ -10,7 +10,7 @@ class Album{
     }
     
     static arrayToString(albums){
-        return '[' + albums.map(function(album){return album.toString();}).join() + ']';
+        return JSON.stringify(albums.map(album => album.toObject()));
     }
     
     get id(){
@@ -42,13 +42,13 @@ class Album{
         this._photos.push(photo);
     }
     
-    toString(){
-        return '{'
-            + '"id": "' + this.id
-            + '", "name": "' + this.name
-            + '", "created_time": "' + this.created_time
-            + '", "photos": [' + this.photos.map(function(p){return p.toString()}).join() + ']'
-            + ' }';
+    toObject(){
+        return {
+            id: this.id,
+            name: this.name,
+            created_time: this.created_time,
+            photos: this.photos.map(photo => photo.toObject())
+        };
     }
     
 }

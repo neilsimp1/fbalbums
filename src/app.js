@@ -1,11 +1,11 @@
 "use strict";
 
-let Album = require("./classes/Album")
-    , Photo = require("./classes/Photo")
-    , config = require("./config")
-    , bodyParser = require("body-parser")
-	, express = require("express")
-	, Facebook = require("facebook-node-sdk");
+let Album = require("./classes/Album"),
+    Photo = require("./classes/Photo"),
+    config = require("./config"),
+    bodyParser = require("body-parser"),
+	express = require("express"),
+	Facebook = require("facebook-node-sdk");
 
 let app = express();
 app.use(bodyParser.urlencoded({extended: true}));
@@ -35,8 +35,8 @@ app.get("/:userID/albums", (req, res) => {
                     _album.photos.data.forEach((_photo) => {
                         album.addPhoto(new Photo(_photo.id, _photo.name, _photo.picture, _photo.source, _photo.created_time));                    
                     });
+                    albums.push(album);
                 }
-                albums.push(album);
             });
         }
         
@@ -49,4 +49,4 @@ app.get("/:userID/albums", (req, res) => {
     });
 });
 
-app.listen(process.env.port || 3000);
+app.listen(process.env.port || 1337);

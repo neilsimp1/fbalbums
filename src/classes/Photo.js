@@ -45,14 +45,14 @@ class Photo{
         this._created_time = value;
     }
     
-    toString(){
-        return '{'
-            + '"id": "' + this.id
-            + '", "name": "' + this.name
-            + '", "thumb": "' + this.thumb
-            + '", "src": "' + this.src
-            + '", "created_time": "' + this.created_time
-            + '" }';
+    toObject(){
+        return {
+            id: this.id,
+            name: this.name,
+            thumb: this.thumb,
+            src: this.src,
+            created_time: this.created_time
+        };
     }
     
 }
