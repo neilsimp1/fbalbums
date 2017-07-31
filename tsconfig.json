@@ -1,0 +1,23 @@
+{
+	"compilerOptions": {
+		"target": "es2016",
+		"rootDir": "src/",
+		"outDir": "dist/",
+		"module": "commonjs",
+		"lib": [
+			"es2015.promise",
+			"es6"
+		],
+		"allowJs": true,
+		"removeComments": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true
+	},
+	"include": [
+		"src/**/*.ts"
+	],
+	"exclude": [
+		"src/typings",
+		"src/renderer.ts"
+    ]
+}

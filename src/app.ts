@@ -1,14 +1,14 @@
 "use strict";
 
-let Album = require("./classes/Album"),
-    Photo = require("./classes/Photo"),
-    config = require("./config"),
-    bodyParser = require("body-parser"),
-	express = require("express"),
-	Facebook = require("facebook-node-sdk");
+import bodyParser from "body-parser";
+import express from "express";
+import Facebook from "facebook-node-sdk";
+import Album from "./classes/Album";
+import Photo from "./classes/Photo";
+import * as config from "./config";
 
 let app = express();
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 let facebook = new Facebook(config);
 
@@ -25,7 +25,7 @@ app.get("/:userID/albums", (req, res) => {
             res.end();
         }
         else{
-            data.albums.data.forEach((_album) => {
+            data.albums.data.forEach(_album => {
 				if(albumIDs){
 					if(albumIDs.indexOf(_album.id) !== -1) return;
 				}
