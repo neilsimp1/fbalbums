@@ -17,7 +17,6 @@
 		"src/**/*.ts"
 	],
 	"exclude": [
-		"src/typings",
-		"src/renderer.ts"
+		"src/config.example.js"
     ]
 }
