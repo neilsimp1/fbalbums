@@ -3,10 +3,10 @@
 		"target": "es2016",
 		"rootDir": "src/",
 		"outDir": "dist/",
-		"module": "commonjs",
+		"module": "es6",
+		"moduleResolution": "Node",
 		"lib": [
-			"es2015.promise",
-			"es6"
+			"es2016"
 		],
 		"allowJs": true,
 		"removeComments": true,
