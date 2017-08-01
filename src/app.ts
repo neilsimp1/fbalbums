@@ -6,11 +6,14 @@ import Album from "./classes/Album";
 import Photo from "./classes/Photo";
 import * as config from "./config";
 
+const FIVE_MINUTES = 300;
+const TEN_MINUTES = 600;
+
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const facebook = new Facebook(config);
-const nodeCache = new NodeCache();
+const nodeCache = new NodeCache( { stdTTL: FIVE_MINUTES });
 
 app.get("/:userID/albums", (req, res): void => {
     const url: string = "http://graph.facebook.com/" + req.params.userID +
