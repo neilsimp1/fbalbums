@@ -3,8 +3,7 @@
 		"target": "es2016",
 		"rootDir": "src/",
 		"outDir": "dist/",
-		"module": "es6",
-		"moduleResolution": "Node",
+		"module": "commonjs",
 		"lib": [
 			"es2016"
 		],

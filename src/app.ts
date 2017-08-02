@@ -1,22 +1,21 @@
-import bodyParser from "body-parser";
-import express from "express";
-import Facebook from "facebook-node-sdk";
-import NodeCache from "node-cache";
+import * as bodyParser from "body-parser";
+import * as express from "express";
+import * as Facebook from "facebook-node-sdk";
+import * as NodeCache from "node-cache";
 import Album from "./classes/Album";
 import Photo from "./classes/Photo";
 import * as config from "./config";
 
-const FIVE_MINUTES = 300;
-const TEN_MINUTES = 600;
+const TIMEOUT = 60;
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const facebook = new Facebook(config);
-const nodeCache = new NodeCache( { stdTTL: FIVE_MINUTES });
+const nodeCache = new NodeCache( { stdTTL: TIMEOUT });
 
-app.get("/:userID/albums", (req, res): void => {
-    const url: string = "http://graph.facebook.com/" + req.params.userID +
+app.get("/:userId/albums", (req, res): void => {
+    const url: string = "http://graph.facebook.com/" + req.params.userId +
             "?fields=albums.fields(id,name,created_time,photos.fields(id,name,picture,source,created_time).limit(5000))";
 	const albumIds: string[] = req.query["ids"] ? req.query["ids"].split(",") : null;
 
