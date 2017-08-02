@@ -6,37 +6,51 @@ import Album from "./classes/Album";
 import Photo from "./classes/Photo";
 import * as config from "./config";
 
-const TIMEOUT = 60;
+const TIMEOUT: number = 60;
 
-const app = express();
+const app: any = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const facebook = new Facebook(config);
-const nodeCache = new NodeCache( { stdTTL: TIMEOUT });
+const facebook: Facebook = new Facebook(config);
+const nodeCache: NodeCache = new NodeCache( { stdTTL: TIMEOUT });
 
-app.get("/:userId/albums", (req, res): void => {
+const getUsersAlbums = async (req: any, res: any) => {
     const url: string = "http://graph.facebook.com/" + req.params.userId +
             "?fields=albums.fields(id,name,created_time,photos.fields(id,name,picture,source,created_time).limit(5000))";
-	const albumIds: string[] = req.query["ids"] ? req.query["ids"].split(",") : null;
+    const albumIds: string[] = req.query["ids"] ? req.query["ids"].split(",") : null;
+    
+    const key: string = req.originalUrl;
 
-    facebook.api(url, (err, data): void => {
-		let albums: Album[] = [];
-
-        if(err) facebookApiErrorHandler(res, err);
-        else albums = facebookApiSuccessHandler(albumIds, data);
-
-        const json = Album.arrayToString(albums);
-
+    let albumsJson: string = await nodeCache.get(key);
+    if(albumsJson){
         res.setHeader("Access-Control-Allow-Origin", "*");
         res.writeHead(200, { "Content-Type": "application/json" });
-        //console.log(json);
-        res.end(json);
-    });
-});
+        //console.log(albumsJson);
+        res.end(albumsJson);
+    }
+    else{
+        facebook.api(url, (err, data): void => {
+            let albums: Album[] = [];
+
+            if(err) facebookApiErrorHandler(res, err);
+            else albums = facebookApiSuccessHandler(albumIds, data);
+
+            albumsJson = Album.albumArrayToJson(albums);
+
+            res.setHeader("Access-Control-Allow-Origin", "*");
+            res.writeHead(200, { "Content-Type": "application/json" });
+            //console.log(albumsJson);
+            res.end(albumsJson);
+
+            nodeCache.set(key, albumsJson);
+        });
+    }
+};
 
 const facebookApiErrorHandler = (res: any, err: any): void => {
-	console.error(err);
-	res.sendStatus(502);
+    console.error(err);
+    res.setHeader("Access-Control-Allow-Origin", "*");
+	res.sendStatus(400);
 	res.end();
 };
 
@@ -54,5 +68,7 @@ const facebookApiSuccessHandler = (albumIds: string[], data: any): Album[] => {
 
 	return albums;
 };
+
+app.get("/:userId/albums", getUsersAlbums);
 
 app.listen(process.env.port || 1337);

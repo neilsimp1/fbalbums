@@ -13,7 +13,7 @@ export default class Album {
         this._created_time = created_time;
     }
 
-    public static arrayToString(albums) {
+    public static albumArrayToJson(albums) {
         return JSON.stringify(albums.map(album => album.toObject()));
     }
 
